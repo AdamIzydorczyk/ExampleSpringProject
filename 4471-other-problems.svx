@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · one more problem in the merge'
+title: '#4471 · two more problems in the merge'
 owner: support desk
 status: living
 reviewed: 2026-10-30
@@ -13,16 +13,17 @@ signature: adam.izydorczyk
 </script>
 
 The [4471 page](/kb/incidents/4471) says one issue, one fix. Reading the 412 merged reports
-(one id, one report, as the desk counts them) against the tenant directory shows the merge
-holds 33 reports of a different bug with no ticket of its own. The five one-day moves the
-desk already reads in desk-notes.json are footnoted on the 4471 page; they need no ticket.
+(one id, one report, as the desk counts them) against the tenant directory shows two more
+problems merged in, neither with a ticket of its own. Neither is fixed by the queued parser
+fix.
 
 <Callout kind="warn">
 The parser ticket is really two causes: 33 of its 412 reports are the v3 form's date hint,
-merged in with no ticket of their own. "One issue, one fix" is false.
+and 5 read as one-day moves — 38 reports of two other bugs, merged in with no ticket of
+their own. "One issue, one fix" is false.
 </Callout>
 
-## The v3 form's date hint (33 reports)
+## 1 · The v3 form's date hint (33 reports)
 
 `booking-v3` prints **MM/DD/YYYY** under its date field, but every v3 tenant writes day
 first: alder.physio (12 reports), copper.studio (11), pale.harbour (10). Their people type
@@ -38,30 +39,41 @@ The queued parser fix will not fix these: the flip is the hint's fault, not the 
 They need their own ticket, and `booking-v3` should print the hint in the tenant's own
 date order (or none at all).
 
-## The one-day moves (footnoted, not filed)
+## 2 · One-day moves (5 reports)
 
-Five of the 412 read as one-day moves, not month flips — R-41202 kettle.books, R-41209
-alder.physio, R-41236 nine.lanterns, R-41344 pale.harbour, R-41620 lantern.row. The desk
-read them one-day in desk-notes.json, and the 4471 page already footnotes them under the
-parser group, counted where filed. They stay in #4471; the table below carries the note.
+Five of the 412 read as one-day moves, not month flips:
+
+- R-41202 kettle.books — "Invite says Tuesday 12 May. Calendar says Monday 11 May."
+- R-41209 alder.physio — "Every booking in June is one day off. Only June."
+- R-41236 nine.lanterns — "The invite arrived before I made the booking."
+- R-41344 pale.harbour — "Client in Lisbon got Tuesday. Client in Toronto got Monday."
+- R-41620 lantern.row — "Tuesday 6 October showed as Monday."
+
+The bodies point at more than one mechanism (a one-day move, a timezone, a queue race), so
+they are not the parser bug, and the parser fix will not fix them. All five were tagged
+`parser` at intake; the desk read them one-day in desk-notes.json, footnoted under the
+parser group on the 4471 page, counted where filed — but they never got a ticket of their
+own.
 
 ## The table
 
 <Callout>
 The desk's own view of the merge, computed by CauseTable from the export: 412 unique
-reports, two causes, the five one-day moves footnoted. The row marked *not this ticket* is
-the problem on this page — 33 reports with no ticket of their own.
+reports, two causes, the five one-day moves footnoted under the parser group, counted
+where filed. The row marked *not this ticket — no ticket of its own* is problem 1 above;
+the five one-day moves are problem 2 above.
 </Callout>
 
 <CauseTable ticket={4471} />
 
 ## What was filed
 
-- The v3-hint problem (33 reports) has a ticket of its own: issue 1 in the course repo,
+- The v3-hint problem (33 reports): issue 1 in the course repo,
   [`AdamIzydorczyk/ExampleSpringProject#1`](https://github.com/AdamIzydorczyk/ExampleSpringProject/issues/1).
   Un-merge the 33 reports from #4471 once it opens, so #4471 is the parser bug again.
-- The five one-day moves: the desk's own footnote, counted where filed on the 4471 page —
-  no ticket of their own, by the desk's convention.
+- The one-day moves (5 reports): issue 2 in the course repo,
+  [`AdamIzydorczyk/ExampleSpringProject#2`](https://github.com/AdamIzydorczyk/ExampleSpringProject/issues/2).
+  Un-merge the five from #4471 once it opens.
 
 Re-read the 4471 page once the split is done; "one issue, one fix" then says so again.
 
