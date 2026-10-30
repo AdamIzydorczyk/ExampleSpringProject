@@ -55,9 +55,14 @@ the problem on this page — 33 reports with no ticket of their own.
 
 <CauseTable ticket={4471} />
 
-## What to do
+## What was filed
 
-- Open a ticket for the 33 v3-hint reports; un-merge them from #4471 once it opens.
-- Re-read the 4471 page once the split is done; "one issue, one fix" then says so again.
+- The v3-hint problem (33 reports) has a ticket of its own: issue 1 in the course repo,
+  [`AdamIzydorczyk/ExampleSpringProject#1`](https://github.com/AdamIzydorczyk/ExampleSpringProject/issues/1).
+  Un-merge the 33 reports from #4471 once it opens, so #4471 is the parser bug again.
+- The five one-day moves: the desk's own footnote, counted where filed on the 4471 page —
+  no ticket of their own, by the desk's convention.
+
+Re-read the 4471 page once the split is done; "one issue, one fix" then says so again.
 
 <RenderStamp {signature} />
