@@ -1,0 +1,65 @@
+---
+layout: runbook
+title: '#4471 · two more problems in the merge'
+owner: support desk
+status: living
+reviewed: 2026-10-30
+signature: adam.izydorczyk
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+</script>
+
+The [4471 page](/kb/incidents/4471) says one issue, one fix. Reading the 412 merged reports
+against the tenant directory shows two more problems merged in, neither with a ticket of its
+own. Neither is fixed by the queued parser fix.
+
+<Callout kind="warn">
+Re-running the merge as one issue strands 38 reports — 33 reports of one bug, 5 of another —
+with no ticket of their own.
+</Callout>
+
+## 1 · The v3 form's date hint (33 reports)
+
+`booking-v3` prints **MM/DD/YYYY** under its date field, but every v3 tenant writes day
+first: alder.physio (12 reports), copper.studio (11), pale.harbour (10). Their people type
+what the hint tells them, month first, and the form reads it the tenant's way: day first.
+The date comes out flipped — the same symptom, a different cause.
+
+15 of the 33 were tagged `parser` at intake; 18 `hint`. Intake guessed from the browser's
+locale, which says day first, while the form says month first. Seen 2026-04-17 →
+2026-09-22, all in the `form` channel.
+
+## 2 · One-day moves (5 reports)
+
+Five reports merged into the parser ticket read as one-day moves, not month flips:
+
+- R-41202 kettle.books — "Invite says Tuesday 12 May. Calendar says Monday 11 May."
+- R-41209 alder.physio — "Every booking in June is one day off. Only June."
+- R-41236 nine.lanterns — "The invite arrived before I made the booking."
+- R-41344 pale.harbour — "Client in Lisbon got Tuesday. Client in Toronto got Monday."
+- R-41620 lantern.row — "Tuesday 6 October showed as Monday."
+
+The bodies point at more than one mechanism (a one-day move, a timezone, a queue race),
+which is why they need their own ticket, not the parser fix. All five were tagged `parser`
+at intake; the desk read them one-day in desk-notes.json but never filed them.
+
+## The table
+
+<Callout>
+The desk's own view of the merge, computed from the export: 412 unique reports, two causes
+grouped, the five one-day moves footnoted. The two rows marked *not this ticket* are the
+problems on this page.
+</Callout>
+
+<CauseTable ticket={4471} />
+
+## What to do
+
+- Open a ticket for the v3 hint (33 reports) and one for the one-day moves (5).
+- Un-merge the five one-day reports from #4471 when the new ticket opens.
+- Re-read the 4471 page once the split is done; "one issue, one fix" stops being true.
+
+<RenderStamp {signature} />
